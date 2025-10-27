@@ -8,6 +8,7 @@ const CardCarousel = () => {
   const [isPaused, setIsPaused] = useState(false);
   const trackRef = useRef(null);
   const animationRef = useRef(null);
+  const scrollPositionRef = useRef(0); // Persist scroll position
 
   const cards = [
     { key: "n1", node: <NotificationCard /> },
@@ -22,24 +23,22 @@ const CardCarousel = () => {
     const track = trackRef.current;
     if (!track) return;
 
-    let scrollPosition = 0;
-    const speed = 0.5;
-    
+    const speed = 0.5; // pixels per frame
+    const cardWidth = 13 * 16 + 0.75 * 16; // 13rem + 0.75rem gap in pixels
+    const totalWidth = cardWidth * 3; // 3 original cards
+
     const animate = () => {
       if (!isPaused) {
-        scrollPosition += speed;
-        
-        
-        const cardWidth = 13 * 16 + 0.75 * 16; 
-        const totalWidth = cardWidth * 3;
-    
-        if (scrollPosition >= totalWidth) {
-          scrollPosition = 0;
+        scrollPositionRef.current += speed;
+
+        // Reset position seamlessly when one set has scrolled
+        if (scrollPositionRef.current >= totalWidth) {
+          scrollPositionRef.current -= totalWidth;
         }
-        
-        track.style.transform = `translateX(-${scrollPosition}px)`;
+
+        track.style.transform = `translateX(-${scrollPositionRef.current}px)`;
       }
-      
+
       animationRef.current = requestAnimationFrame(animate);
     };
 
@@ -50,7 +49,7 @@ const CardCarousel = () => {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [isPaused]);
+  }, [isPaused]); // Effect re-runs on pause state change
 
   return (
     <div className="carousel-wrapper">
