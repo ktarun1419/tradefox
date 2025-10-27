@@ -1,6 +1,6 @@
 # Assignment for Tradefox
 
-This project is live at[Link](https://tradefox-teal.vercel.app/).
+This project is live at [Link](https://tradefox-teal.vercel.app/).
 
 ## Tech Stack
 Used React, javascript and scss (haven't used typescript because functionality is minimal)
