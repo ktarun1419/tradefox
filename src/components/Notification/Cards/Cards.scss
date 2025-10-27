@@ -1,0 +1,15 @@
+.notification_card {
+  .header {
+    width: 100%;
+  }
+  &_content {
+    width: 100%;
+    flex-grow: 1;
+    &_input {
+      padding: 0.5rem 0.75rem;
+      width: 100%;
+      border-radius: 0.35rem;
+      border: 0.7px solid #D4D4D4;
+    }
+  }
+}

@@ -1,0 +1,51 @@
+// src/components/Layout.scss
+.column {
+  width: 100%;
+}
+
+.stack {
+  width: 100%;
+}
+
+.box {
+  width: 100%;
+
+  // Padding
+  &--padding-none {
+    padding: 0;
+  }
+  &--padding-xs {
+    padding: 0.5rem;
+  }
+  &--padding-sm {
+    padding: 1rem;
+  }
+  &--padding-md {
+    padding: 1.5rem;
+  }
+  &--padding-lg {
+    padding: 2rem;
+  }
+  &--padding-xl {
+    padding: 3rem;
+  }
+
+  // Center
+  &--center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  // Responsive padding
+  @media (max-width: 768px) {
+    &--padding-md {
+      padding: 1rem;
+    }
+    &--padding-lg {
+      padding: 1.5rem;
+    }
+    &--padding-xl {
+      padding: 2rem;
+    }
+  }
+}

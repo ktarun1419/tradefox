@@ -1,0 +1,27 @@
+.button {
+  border-radius: 0.5rem;
+  border: 1px solid #19191a;
+  background: #19191a;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 120%;
+  color: #fff;
+  padding: 1rem 1.5rem;
+  width: 100%;
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    opacity: 0.9;
+    cursor: pointer;
+    transform: scale(1.01);
+  }
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.8;
+  }
+
+  &--secondary{
+    background: #fff;
+    color: #19191a;
+  }
+}

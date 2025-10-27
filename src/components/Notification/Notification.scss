@@ -1,0 +1,15 @@
+.notification {
+  width: 100%;
+  padding-left: 3rem;
+  @media (max-width: 600px) {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .content {
+    width: 70%;
+    @media (max-width: 600px) {
+      width: 100%;
+    }
+  }
+}

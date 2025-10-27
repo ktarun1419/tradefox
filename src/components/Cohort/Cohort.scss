@@ -1,0 +1,38 @@
+.cohort {
+  width: 100%;
+  padding: 0 3rem 0 3rem;
+  @media (max-width: 600px) {
+    flex-direction: column-reverse;
+    padding: 1rem;
+  }
+  .content {
+    width: 60%;
+    text-align: right;
+
+    &_heading {
+      width: 60%;
+    }
+
+    @media (max-width: 950px) {
+      &_heading {
+        width: 100%;
+      }
+    }
+    @media (max-width: 600px) {
+      width: 100%;
+    }
+  }
+  .image {
+    width: 45%;
+    border-radius: 0.75rem;
+    border: 1.5px solid rgba(255, 255, 255, 0.68);
+    box-shadow: 0 8px 22px -6px rgba(24, 39, 75, 0.12), 0 14px 64px -4px rgba(24, 39, 75, 0.12);
+    transition: transform 0.3s ease-in-out;
+    &:hover {
+      transform: scale(1.05);
+    }
+    @media (max-width: 600px) {
+      width: 90%;
+    }
+  }
+}

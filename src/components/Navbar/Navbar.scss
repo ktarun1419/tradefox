@@ -1,0 +1,20 @@
+.navbar {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  background: rgba(0, 0, 0, 1);
+  border-bottom: 1px solid rgba(229, 229, 230, 0.5);
+  z-index: 100;
+  @media (max-width: 750px) {
+    display: flex;
+  }
+  &_button {
+    max-width: 10rem;
+  }
+  &_logo{
+    width: 2.5rem;
+  }
+}
