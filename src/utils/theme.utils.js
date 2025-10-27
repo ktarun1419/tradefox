@@ -6,7 +6,6 @@ export const getSpacing = (props, propName) => {
   return value;
 };
 
-// Helper for responsive props
 export const getResponsiveValue = (value, breakpoint) => {
   if (typeof value === 'object' && value[breakpoint]) {
     return value[breakpoint];

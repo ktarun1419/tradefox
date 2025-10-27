@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from "react";
-import { Box, Stack } from "../../components/Layout/Layout";
+import { Stack } from "../../components/Layout/Layout";
 import "./Main.scss";
 import Signup from "../../components/Signup/Signup";
 import Information from "../../components/Information/Information";
 import Navbar from "../../components/Navbar/Navbar";
-import BottomSheet from "../../components/BottomSheet/BottomSheet";
 import BottomSignup from "../../components/Signup/BottomSignup";
+
 const Main = () => {
   const [open, setOpen] = useState(false);
 
@@ -17,7 +17,7 @@ const Main = () => {
       <Navbar handleClose={handleClose} />
       <Information />
       <Signup />
-     <BottomSignup open={open} handleClose={handleClose} />
+      <BottomSignup open={open} handleClose={handleClose} />
     </Stack>
   );
 };

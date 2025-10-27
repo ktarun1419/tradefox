@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useState } from "react";
+import React, { useEffect, useId, useMemo, useState } from "react";
 import "./Input.scss";
 
 export default function Input({ label, type = "text", placeholder, value, defaultValue, onChange, validate, required = false, disabled = false, className = "", setError }) {
@@ -9,7 +9,14 @@ export default function Input({ label, type = "text", placeholder, value, defaul
 
   const val = isControlled ? value : inner;
 
-  const error = touched && validate ? validate(val) : null;
+  const rawError = useMemo(() => {
+    const base = validate ? validate(val) : null;
+    if (base) return base;
+    if (required && !String(val ?? "").trim()) return "This field is required.";
+    return null;
+  }, [val, validate, required]);
+
+  const showError = touched ? rawError : null;
 
   function handleChange(e) {
     const v = e.target.value;
@@ -18,14 +25,12 @@ export default function Input({ label, type = "text", placeholder, value, defaul
   }
 
   useEffect(() => {
-    if (error) {
-     return setError(true);
-    }
-   setError(null)
-  }, [error, setError]);
+    if (!setError) return;
+    setError(!!rawError);
+  }, [rawError, setError]);
 
   return (
-    <div className={`in ${error ? "has-error" : ""} ${disabled ? "is-disabled" : ""} ${className}`}>
+    <div className={`in ${showError ? "has-error" : ""} ${disabled ? "is-disabled" : ""} ${className}`}>
       {label && (
         <label htmlFor={id} className="in__label">
           {label} {required ? <span aria-hidden="true">*</span> : null}
@@ -40,14 +45,14 @@ export default function Input({ label, type = "text", placeholder, value, defaul
         value={val}
         onChange={handleChange}
         onBlur={() => setTouched(true)}
-        aria-invalid={!!error}
-        aria-describedby={error ? `${id}-err` : undefined}
+        aria-invalid={!!showError}
+        aria-describedby={showError ? `${id}-err` : undefined}
         required={required}
         disabled={disabled}
       />
 
       <div className="in__error" role="alert" id={`${id}-err`}>
-        {error}
+        {showError}
       </div>
     </div>
   );

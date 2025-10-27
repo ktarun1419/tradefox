@@ -22,7 +22,6 @@ const FundCard = () => {
           options={amounts}
           defaultValue={1000}
           getOptionLabel={(n) => fmt.format(n)}
-          // getOptionValue default works for primitives
           size="sm"
           className="w"
         />

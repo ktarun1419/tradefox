@@ -16,7 +16,6 @@ export default function BottomSheet({
   const draggingRef = useRef(false);
   const lastDeltaRef = useRef(0);
 
-  // prevent body scroll when open
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
