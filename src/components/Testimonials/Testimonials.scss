@@ -13,6 +13,7 @@
     padding-right: 3rem;
     @media (max-width: 600px) {
       padding: 1rem;
+      align-items: flex-start;
     }
   }
   &_content_wrapper {

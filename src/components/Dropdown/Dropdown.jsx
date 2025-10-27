@@ -26,6 +26,26 @@ export default function Dropdown({
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
 
+  const hoverCloseTimer = useRef(null);
+  const openList = () => {
+    if (disabled) return;
+    setOpen(true);
+    setActiveIndex(currentIndex >= 0 ? currentIndex : 0);
+  };
+  const scheduleClose = (delay = 120) => {
+    clearTimeout(hoverCloseTimer.current);
+    hoverCloseTimer.current = setTimeout(() => setOpen(false), delay);
+  };
+  const cancelScheduledClose = () => clearTimeout(hoverCloseTimer.current);
+
+  const onHoverEnter = () => {
+    cancelScheduledClose();
+    if (!open) openList();
+  };
+  const onHoverLeave = () => {
+    scheduleClose();
+  };
+
   const normalized = useMemo(
     () => (options || []).map((o, i) => ({ raw: o, value: getOptionValue(o), label: getOptionLabel(o), key: `opt-${i}` })),
     [options, getOptionLabel, getOptionValue]
@@ -43,45 +63,30 @@ export default function Dropdown({
     requestAnimationFrame(() => btnRef.current?.focus());
   }
 
-  function openList() {
-    if (disabled) return;
-    setOpen(true);
-    setActiveIndex(currentIndex >= 0 ? currentIndex : 0);
-  }
-
   useEffect(() => {
     if (!open) return;
-    function onDoc(e) {
+    const onDoc = (e) => {
       const t = e.target;
       if (!popRef.current?.contains(t) && !btnRef.current?.contains(t)) {
         setOpen(false);
       }
-    }
+    };
     document.addEventListener("mousedown", onDoc);
     return () => document.removeEventListener("mousedown", onDoc);
   }, [open]);
 
+  // Position portal popover
   const [portalStyle, setPortalStyle] = useState({ top: 0, left: 0, minWidth: 0 });
-  useLayoutEffect(() => {
-    if (!open) return;
+  const positionPopover = () => {
     const btn = btnRef.current;
     if (!btn) return;
     const r = btn.getBoundingClientRect();
-    setPortalStyle({
-      top: Math.round(r.bottom + 8),
-      left: Math.round(r.left),
-      minWidth: Math.round(r.width),
-    });
-  }, [open]);
-
+    setPortalStyle({ top: Math.round(r.bottom + 8), left: Math.round(r.left), minWidth: Math.round(r.width) });
+  };
+  useLayoutEffect(() => { if (open) positionPopover(); }, [open]);
   useEffect(() => {
     if (!open) return;
-    const handler = () => {
-      const btn = btnRef.current;
-      if (!btn) return;
-      const r = btn.getBoundingClientRect();
-      setPortalStyle({ top: Math.round(r.bottom + 8), left: Math.round(r.left), minWidth: Math.round(r.width) });
-    };
+    const handler = () => positionPopover();
     window.addEventListener("scroll", handler, true);
     window.addEventListener("resize", handler);
     return () => {
@@ -99,11 +104,13 @@ export default function Dropdown({
         e.preventDefault();
         openList();
         break;
+      case "Escape":
+        setOpen(false);
+        break;
       default:
         break;
     }
   }
-
   function onListKeyDown(e) {
     switch (e.key) {
       case "ArrowDown":
@@ -150,6 +157,8 @@ export default function Dropdown({
       className={`dd__popover ${portal ? "dd__popover--portal" : ""}`}
       onKeyDown={onListKeyDown}
       style={portal ? portalStyle : undefined}
+      onMouseEnter={onHoverEnter}
+      onMouseLeave={onHoverLeave}
     >
       {normalized.map((o, i) => {
         const selected = i === currentIndex;
@@ -172,7 +181,11 @@ export default function Dropdown({
   ) : null;
 
   return (
-    <div className={`dd ${size} ${disabled ? "is-disabled" : ""} ${className}`}>
+    <div
+      className={`dd ${size} ${disabled ? "is-disabled" : ""} ${className}`}
+      onMouseEnter={onHoverEnter}
+      onMouseLeave={onHoverLeave}
+    >
       <button
         ref={btnRef}
         id={btnId}
@@ -181,21 +194,20 @@ export default function Dropdown({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={listId}
-        onClick={() => (open ? setOpen(false) : openList())}
         onKeyDown={onButtonKeyDown}
         disabled={disabled}
       >
         <span className={`dd__value ${currentIndex < 0 ? "is-placeholder" : ""}`}>
-          {currentIndex >= 0 ? (renderValue ? renderValue(normalized[currentIndex].value, currentLabel) : currentLabel) : placeholder}
+          {currentIndex >= 0
+            ? (renderValue ? renderValue(normalized[currentIndex].value, currentLabel) : currentLabel)
+            : placeholder}
         </span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="6" height="3" viewBox="0 0 6 3" fill="none">
-          <path
-            d="M0.0516068 0.298746L2.42914 2.67625C2.49748 2.7446 2.60829 2.7446 2.67663 2.67625L5.0541 0.298746C5.16435 0.188496 5.0863 0 4.93034 0H0.175353C0.0194416 0 -0.0586362 0.188503 0.0516068 0.298746Z"
-            fill="#96979A"
-          />
+        <svg xmlns="http://www.w3.org/2000/svg" width="6" height="3" viewBox="0 0 6 3" fill="none" aria-hidden="true">
+          <path d="M0.0516 0.2987L2.4291 2.6763c.0683.0683.1791.0683.2475 0L5.0541.2987C5.1644.1885 5.0863 0 4.9303 0H.1754C.0194 0-.0586.1885.0516.2987Z" fill="#96979A"/>
         </svg>
       </button>
 
+     
       {!portal && popover}
       {portal && open && createPortal(popover, document.body)}
     </div>

@@ -4,7 +4,7 @@ import ThemedText from "../../ThemedText/ThemedText";
 import { ReactComponent as BarChart } from "../../../assets/svgs/BarChart.svg";
 import Dropdown from "../../Dropdown/Dropdown";
 
-const amounts = [ 1000];
+const amounts = [ 1000, 2000, 3000];
 
 const FundCard = () => {
   const fmt = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });

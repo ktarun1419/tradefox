@@ -5,6 +5,9 @@
   &_content {
     width: 100%;
     flex-grow: 1;
+    &_text{
+        width: 60%;
+    }
     &_input {
       padding: 0.5rem 0.75rem;
       width: 100%;

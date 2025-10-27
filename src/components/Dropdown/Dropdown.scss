@@ -4,6 +4,7 @@
   position: relative;
   display: inline-block;
   color: var(--dd-text);
+  width: max-content;
 
   &.is-disabled .dd__button {
     opacity: 0.55;
@@ -31,6 +32,7 @@
   border-radius: 0.175rem;
   padding: 0.2625rem;
   color: #313233;
+ 
   cursor: pointer;
   line-height: 120%;
   user-select: none;
@@ -70,12 +72,11 @@
   transform: rotate(180deg);
 }
 
-/* popover */
 .dd__popover {
   position: absolute;
-  top: 100%;
+  top: 120%;
   left: 0;
-  margin-top: 8px;
+  margin-top: 100%;
   min-width: 220px;
   background: #fff;
   border-radius: 10px;
@@ -95,7 +96,7 @@
   padding: 0.25rem;
   border-radius: 0.25rem;
   cursor: pointer;
-  font-size: 0.5rem;
+  font-size: 0.75rem;
   line-height: 120%;
 
   &:hover,
